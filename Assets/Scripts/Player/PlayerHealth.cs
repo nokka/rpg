@@ -5,12 +5,11 @@ using System.Collections;
 public class PlayerHealth : MonoBehaviour
 {
     public int startingHealth = 100;
-    public Slider healthSlider;
+    public int currentHealth;
 
+    private Slider healthSlider;
     private Animator animator;
     private PlayerMovement playerMovement;
-
-    private int currentHealth;
     private bool isDead;
     private bool damaged;
 
@@ -19,15 +18,17 @@ public class PlayerHealth : MonoBehaviour
         animator = GetComponent<Animator>();
         playerMovement = GetComponent<PlayerMovement>();
         currentHealth = startingHealth;
+        healthSlider = GetComponentInChildren<Slider>();
     }
 
     void Update()
     {
         if (damaged)
         {
-            // play damaged animation
-            damaged = false;
+            // TODO: play damaged animation
         }
+
+        damaged = false;
     }
 
     public void TakeDamage(int amount)
@@ -40,11 +41,11 @@ public class PlayerHealth : MonoBehaviour
 
         if (currentHealth <= 0 && !isDead)
         {
-            Death();
+            Die();
         }
     }
 
-    void Death()
+    private void Die()
     {
         isDead = true;
 
