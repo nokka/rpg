@@ -43,7 +43,7 @@ public class PlayerMovement : MonoBehaviour
             diff.y = 0.0f;
 
             // If we're further away than 0.5 units, we'll set the movement.
-            if (diff.magnitude > 0.5f)
+            if (diff.magnitude > 1f)
             {
                 Quaternion targetRotation = Quaternion.LookRotation(diff);
 
