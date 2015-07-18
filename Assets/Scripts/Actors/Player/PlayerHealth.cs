@@ -44,6 +44,9 @@ public class PlayerHealth : Actor
 
         animator.SetTrigger("Die");
 
+        // Stop moving
+        playerMovement.Stop();
+
         // disable movement when dead
         playerMovement.enabled = false;
     }

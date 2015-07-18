@@ -31,7 +31,7 @@ public class PlayerMovement : MonoBehaviour
         animator.SetBool("IsWalking", agent.velocity != Vector3.zero);
     }
 
-    void Move()
+    private void Move()
     {
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -57,5 +57,10 @@ public class PlayerMovement : MonoBehaviour
                 agent.SetDestination(hit.point);
             }
         }
+    }
+
+    public void Stop()
+    {
+        agent.Stop();
     }
 }
