@@ -6,8 +6,13 @@ public class EnemyHealth : MonoBehaviour
     public int startingHealth = 100;
     public int currentHealth;
     public int expValue = 10;
+    public GameObject healthPrefab;
+    public Canvas canvas;
 
+    private GameObject healthPanel;
     private Slider healthSlider;
+    public float healthPanelOffset = 0.35f;
+
     private Animator animator;
     private ParticleSystem hitParticles;
     private CapsuleCollider capsuleCollider;
@@ -18,9 +23,22 @@ public class EnemyHealth : MonoBehaviour
         animator = GetComponent<Animator>();
         hitParticles = GetComponentInChildren<ParticleSystem>();
         capsuleCollider = GetComponent<CapsuleCollider>();
-        healthSlider = GetComponentInChildren<Slider>();
-    
+
+        // Copy the prefab into our own instantiated health bar
+        healthPanel = Instantiate(healthPrefab) as GameObject;
+        healthPanel.transform.SetParent(canvas.transform, false);
+        healthSlider = healthPanel.GetComponentInChildren<Slider>();
+
+        // Set our enemy name
+        Text enemyName = healthPanel.GetComponentInChildren<Text>();
+        enemyName.text = "BIG BOSS";
+
         currentHealth = startingHealth;
+    }
+
+    void Update()
+    {
+        UpdateHealthBarPosition();
     }
 
     public void TakeDamage(int amount)
@@ -39,6 +57,13 @@ public class EnemyHealth : MonoBehaviour
         {
             Die();
         }
+    }
+
+    private void UpdateHealthBarPosition()
+    {
+        Vector3 worldPos = new Vector3(transform.position.x, transform.position.y + healthPanelOffset, transform.position.z);
+        Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPos);
+        healthPanel.transform.position = screenPos;
     }
 
     void Die()
