@@ -26,6 +26,28 @@ public class CombatState : IState
         bsm.Add(BattleState.Loot, new LootState(bsm));
     }
 
+    private void SetCombatReadiness(bool state)
+    {
+        actors.ForEach(delegate (GameObject entity)
+        {
+            // Set the health panel to active for all entities in the battle
+            Actor actor = entity.GetComponent<Actor>();
+
+            if (actor != null)
+            {
+                actor.SetHealthPanelActive(state);
+            }
+
+            // Disable the click to move input for our entities who are movable
+            IMovable movement = entity.GetComponent<IMovable>();
+
+            if (movement != null)
+            {
+                movement.IsMovable(!state);
+            }
+        });
+    }
+
     public void Update()
     {
         bsm.Update();
@@ -41,24 +63,7 @@ public class CombatState : IState
         }
 
         // Initation of combat
-        actors.ForEach(delegate (GameObject entity)
-        {
-            // Set the health panel to active for all entities in the battle
-            Actor actor = entity.GetComponent<Actor>();
-
-            if (actor != null)
-            {
-                actor.SetHealthPanelActive(true);
-            }
-
-            // Disable the click to move input for our entities who are movable
-            IMovable movement = entity.GetComponent<IMovable>();
-
-            if(movement != null)
-            {
-                movement.IsMovable(false);
-            }
-        }); 
+        SetCombatReadiness(true);
 
         // TODO: Sort actors by speed, so the fastest one will get the first turn
 
@@ -71,24 +76,7 @@ public class CombatState : IState
     {
         Debug.Log("Exit combat");
 
-        actors.ForEach(delegate (GameObject entity)
-        {
-            // Set the health panel to inactive for all entities in the battle
-            Actor actor = entity.GetComponent<Actor>();
-
-            if (actor != null)
-            {
-                actor.SetHealthPanelActive(false);
-            }
-
-            // Enable the click to move input for our entities who are movable
-            IMovable movement = entity.GetComponent<IMovable>();
-
-            if (movement != null)
-            {
-                movement.IsMovable(true);
-            }
-        });
+        SetCombatReadiness(false);
 
         // reset combatants
         actors = null;
