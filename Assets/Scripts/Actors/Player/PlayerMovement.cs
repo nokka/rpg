@@ -70,8 +70,12 @@ public class PlayerMovement : MonoBehaviour, IMovable
 
     public void IsMovable(bool isMovable)
     {
+       
         // stop the agent from moving anymore
         agent.Stop();
+
+        // release the current path
+        agent.ResetPath();
 
         // Reset animation to idle
         animator.SetBool("IsWalking", false);

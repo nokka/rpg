@@ -3,7 +3,9 @@
 public enum BattleState
 {
     Turn = 0,
-    Execute = 1
+    Execute = 1,
+    Loot = 3,
+    Defeat = 4
 }
 
 public class BattleStateMachine

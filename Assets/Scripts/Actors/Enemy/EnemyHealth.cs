@@ -13,12 +13,14 @@ public class EnemyHealth : Actor, IHealth<int>
 
     private Animator animator;
     private CapsuleCollider capsuleCollider;
+    private IDetectCombat detectCombat;
 
     public override void Awake()
     {
         base.Awake();
         animator = GetComponent<Animator>();
         capsuleCollider = GetComponent<CapsuleCollider>();
+        detectCombat = GetComponent<IDetectCombat>();
     }
 
     void Update()
@@ -46,9 +48,11 @@ public class EnemyHealth : Actor, IHealth<int>
         // remove obstacle by setting it to a trigger
         capsuleCollider.isTrigger = true;
 
+        detectCombat.DetectEnemies = false;
+   
         animator.SetTrigger("Dead");
 
         // Destroy game object after 2 sec
-        //Destroy(gameObject, 2f);
+        Destroy(gameObject, 2f);
     }
 }

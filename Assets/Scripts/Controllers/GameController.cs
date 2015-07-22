@@ -48,6 +48,17 @@ public class GameController : MonoBehaviour {
         gsm.Change(GameState.Combat);
     }
 
+    public void ExitCombat()
+    {
+        inCombat = false;
+
+        // Clear the combat groups
+        combatGroups.Clear();
+
+        // Change back to roaming state
+        gsm.Change(GameState.Roaming);
+    }
+
     public void AddCombatGroup(GameObject entity, CombatGroup combatGroup)
     {
         if (!combatGroups.ContainsKey(combatGroup))

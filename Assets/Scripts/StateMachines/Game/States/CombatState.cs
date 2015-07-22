@@ -23,6 +23,7 @@ public class CombatState : IState
 
         bsm.Add(BattleState.Turn, new TurnState(bsm, actors));
         bsm.Add(BattleState.Execute, new ExecuteState(bsm));
+        bsm.Add(BattleState.Loot, new LootState(bsm));
     }
 
     public void Update()
@@ -32,7 +33,6 @@ public class CombatState : IState
 
     public void OnEnter()
     {
-        
         // We'll take the combat groups the game controller have collected,
         // adding them to our own list of combatants
         foreach (KeyValuePair<CombatGroup, GameObject> combatant in gameController.combatGroups)
@@ -69,6 +69,27 @@ public class CombatState : IState
 
     public void OnExit()
     {
+        Debug.Log("Exit combat");
+
+        actors.ForEach(delegate (GameObject entity)
+        {
+            // Set the health panel to inactive for all entities in the battle
+            Actor actor = entity.GetComponent<Actor>();
+
+            if (actor != null)
+            {
+                actor.SetHealthPanelActive(false);
+            }
+
+            // Enable the click to move input for our entities who are movable
+            IMovable movement = entity.GetComponent<IMovable>();
+
+            if (movement != null)
+            {
+                movement.IsMovable(true);
+            }
+        });
+
         // reset combatants
         actors = null;
     }

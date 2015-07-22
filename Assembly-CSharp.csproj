@@ -48,9 +48,9 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\Actors\Actor.cs" />
      <Compile Include="Assets\Scripts\Actors\Enemy\EnemyAttack.cs" />
-     <Compile Include="Assets\Scripts\Actors\Enemy\EnemyCombat.cs" />
+     <Compile Include="Assets\Scripts\Actors\Enemy\EnemyDetectCombat.cs" />
      <Compile Include="Assets\Scripts\Actors\Enemy\EnemyHealth.cs" />
-     <Compile Include="Assets\Scripts\Actors\Player\PlayerCombat.cs" />
+     <Compile Include="Assets\Scripts\Actors\Player\PlayerDetectCombat.cs" />
      <Compile Include="Assets\Scripts\Actors\Player\PlayerHealth.cs" />
      <Compile Include="Assets\Scripts\Actors\Player\PlayerMovement.cs" />
      <Compile Include="Assets\Scripts\Camera\CameraFollow.cs" />
@@ -61,11 +61,13 @@
      <Compile Include="Assets\Scripts\Interfaces\IAction.cs" />
      <Compile Include="Assets\Scripts\Interfaces\IBattleState.cs" />
      <Compile Include="Assets\Scripts\Interfaces\IDecision.cs" />
+     <Compile Include="Assets\Scripts\Interfaces\IDetectCombat.cs" />
      <Compile Include="Assets\Scripts\Interfaces\IHealth.cs" />
      <Compile Include="Assets\Scripts\Interfaces\IMovable.cs" />
      <Compile Include="Assets\Scripts\Interfaces\IState.cs" />
      <Compile Include="Assets\Scripts\StateMachines\Battle\BattleStateMachine.cs" />
      <Compile Include="Assets\Scripts\StateMachines\Battle\States\ExecuteState.cs" />
+     <Compile Include="Assets\Scripts\StateMachines\Battle\States\LootState.cs" />
      <Compile Include="Assets\Scripts\StateMachines\Battle\States\TurnState.cs" />
      <Compile Include="Assets\Scripts\StateMachines\Game\GameStateMachine.cs" />
      <Compile Include="Assets\Scripts\StateMachines\Game\States\CombatState.cs" />

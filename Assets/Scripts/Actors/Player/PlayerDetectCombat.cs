@@ -1,12 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerCombat : MonoBehaviour {
+public class PlayerDetectCombat : MonoBehaviour, IDetectCombat {
+
+    // Determines if we're detecting enemies or not
+    public bool DetectEnemies { get; set; }
 
     private GameController gameController;
 
     void Awake()
     {
+        DetectEnemies = true;
+
         GameObject gameControllerObject = GameObject.FindWithTag("GameController");
 
         if(gameControllerObject != null)

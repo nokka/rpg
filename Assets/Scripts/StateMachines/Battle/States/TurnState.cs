@@ -15,6 +15,9 @@ public class TurnState : IBattleState {
     // The current actor holding the turn
     private GameObject actor;
 
+    // The current targets
+    private List<GameObject> targets = new List<GameObject>();
+
     // Determines if we're waiting for an action to be decided
     private bool waitingForAction = false;
 
@@ -29,6 +32,31 @@ public class TurnState : IBattleState {
         return list[(list.IndexOf(item) + 1) == list.Count ? 0 : (list.IndexOf(item) + 1)];
     }
 
+    private void FindViableTargets(string group)
+    {
+        targets.Clear();
+
+        combatants.ForEach(entity => {
+
+            // If the entity isn't in our group, add them to targets
+            if (entity.tag != group)
+            {
+                IHealth<int> entityHealth = entity.GetComponent<IHealth<int>>();
+
+                if(!entityHealth.IsDead)
+                {
+                    targets.Add(entity);
+                }
+            }
+        });
+        
+
+        if(targets.Count == 0)
+        {
+            bsm.Change(BattleState.Loot);
+        }
+    }
+
     public void Update()
     {
         if (!waitingForAction) 
@@ -37,19 +65,21 @@ public class TurnState : IBattleState {
             actor = NextOf(combatants, actor);
             IHealth<int> actorHealth = actor.GetComponent<IHealth<int>>();
 
+            FindViableTargets(actor.tag);
+
             // A dead actor can't make moves, so we'll simply return
-            if (actorHealth.IsDead)
+            if (actorHealth.IsDead || targets.Count == 0)
             {
                 return;
             }
      
             if (actor.tag == "Player")
             {
-                decision = new PlayerDecision(actor, combatants.FindAll(a => a.tag.Equals("Enemy")));
+                decision = new PlayerDecision(actor, targets);
             }
             else
             {
-                decision = new AIDecision(actor, combatants.FindAll(a => a.tag.Equals("Player")));
+                decision = new AIDecision(actor, targets);
             }
 
             waitingForAction = true;
